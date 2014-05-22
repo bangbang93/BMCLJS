@@ -21,7 +21,7 @@
         "always-on-top": false, 
         "height": 480, 
         "show_in_taskbar": true, 
-        "toolbar": false, 
+        "toolbar": true,
         "width": 640, 
         "visible": true, 
         "as_desktop": false
