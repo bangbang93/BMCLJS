@@ -27,7 +27,8 @@
         "as_desktop": false
     }, 
     "description": "",
-    "packages":{
-        "jquery": "2.1.1"
+    "dependencies":{
+        "jquery": "2.1.1",
+        "async": "0.9.0"
     }
 }
