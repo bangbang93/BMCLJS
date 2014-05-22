@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BMCLJS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script>
+        var bmcl = require('./js/index.js');
+        bmcl.refreshVersionList(function(err, files){
+            if (err){
+                document.write('获取版本列表失败' + JSON.stringify(err));
+            } else {
+                files.forEach(function(e){
+                    $('#versions').append('<option>' + e + '</option>');
+                })
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <label for="versions">版本</label><select id="versions" size="20" class="form-control"></select>
+        </div>
+        <div class="col-sm-8">
+            <p>感受一下，所以随便放点东西</p>
+            <button class="btn-primary btn">没用的按钮1</button>
+            <button class="btn-primary btn">没用的按钮2</button>
+        </div>
+    </div>
+    <div class="row">
+        <button onclick="window.location.reload();" class="btn-link">刷新</button>
+    </div>
+</div>
+</body>
+</html>

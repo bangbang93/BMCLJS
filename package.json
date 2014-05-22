@@ -1,0 +1,30 @@
+{
+    "webkit": {
+        "java": false, 
+        "page-cache": false, 
+        "plugin": false
+    }, 
+    "name": "BMCLJS", 
+    "single-instance": true, 
+    "node-main": "", 
+    "keywords": [], 
+    "nodejs": true, 
+    "main": "index.html", 
+    "version": "0.0.1", 
+    "window": {
+        "frame": true, 
+        "title": "BMCLJS", 
+        "icon": "", 
+        "fullscreen": false, 
+        "position": "", 
+        "resizable": true,
+        "always-on-top": false, 
+        "height": 480, 
+        "show_in_taskbar": true, 
+        "toolbar": false, 
+        "width": 640, 
+        "visible": true, 
+        "as_desktop": false
+    }, 
+    "description": ""
+}
