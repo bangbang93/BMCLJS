@@ -26,5 +26,8 @@
         "visible": true, 
         "as_desktop": false
     }, 
-    "description": ""
+    "description": "",
+    "packages":{
+        "jquery": "2.1.1"
+    }
 }
