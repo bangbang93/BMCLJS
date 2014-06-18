@@ -20,8 +20,8 @@
         "resizable": true,
         "always-on-top": false, 
         "height": 480, 
-        "show_in_taskbar": true, 
-        "toolbar": true,
+        "show_in_taskbar": true,
+        "toolbar": false,
         "width": 640, 
         "visible": true, 
         "as_desktop": false

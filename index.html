@@ -11,12 +11,21 @@
         var bmcl = require('./js/index.js');
         $(document).ready(function(){
             $('#btnStart').click(function(){
-                var that = $(this);
 
             });
             $('#versions').change(function(){
                 var that = $(this);
-
+                bmcl.getGameInfo(that.val(), function(err, data){
+                    if (err){
+                        throw err;
+                    } else {
+                        console.log(data);
+                        $('#gameVersion').append(data.id);
+                        $('#lastPlayTime').append(data.time);
+                        $('#releaseTime').append(data.releaseTime);
+                        $('#releaseType').append(data.type);
+                    }
+                })
             });
         });
         bmcl.refreshVersionList(function(err, files){
@@ -26,7 +35,9 @@
                 files.forEach(function(e){
                     $('#versions').append('<option>' + e + '</option>');
                 });
-                $('#versions').find('option').first().attr('selected','selected')
+                var $versions = $('#versions');
+                $versions.find('option').first().attr('selected','selected');
+                $versions.change();
             }
         });
     </script>
@@ -34,17 +45,35 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-xs-4">
             <label for="versions">版本</label><select id="versions" size="20" class="form-control"></select>
         </div>
-        <div class="col-sm-8">
-            <p>感受一下，所以随便放点东西</p>
+        <div class="col-xs-8">
+            <table class="table table-hover table-striped">
+                <tr>
+                    <td> 游戏版本</td>
+                    <td><p id="gameVersion"></p></td>
+                </tr>
+                <tr>
+                    <td>上次打开时间</td>
+                    <td><p id="lastPlayTime"></p></td>
+                </tr>
+                <tr>
+                    <td>发布时间</td>
+                    <td><p id="releaseTime"></p></td>
+                </tr>
+                <tr>
+                    <td>发布类型</td>
+                    <td><p id="releaseType"></p></td>
+                </tr>
+            </table>
             <button class="btn-primary btn" id="btnStart">启动</button>
             <button class="btn-primary btn">没用的按钮</button>
         </div>
     </div>
     <div class="row">
-        <button onclick="window.location.reload();" class="btn-link">刷新</button>
+        <button onclick="window.location.reload();" class="btn btn-link">刷新</button>
+        <button onclick="require('nw.gui').Window.get().showDevTools();" class="btn btn-link">显示调试屏幕</button>
     </div>
 </div>
 </body>
