@@ -85,10 +85,11 @@
       <file leaf-file-name="config.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/renderer/pages/config.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="10" lean-forward="true" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
+            <state relative-caret-position="433">
+              <caret line="62" column="13" lean-forward="true" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
               <folding>
-                <element signature="e#731#782#0" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#el-col#1;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#833#884#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -566,7 +567,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1502605701412</updated>
-      <workItem from="1502605702838" duration="13124000" />
+      <workItem from="1502605702838" duration="13365000" />
     </task>
     <task id="LOCAL-00001" summary="init icon">
       <created>1502606721865</created>
@@ -638,11 +639,18 @@
       <option name="project" value="LOCAL" />
       <updated>1502618864238</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="设置界面……">
+      <created>1502619468274</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1502619468274</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13124000" />
+    <option name="totallyTimeSpent" value="13365000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2500" height="1057" extended-state="6" />
@@ -686,7 +694,8 @@
     <MESSAGE value="读取目录" />
     <MESSAGE value="path" />
     <MESSAGE value="设置界面初始化" />
-    <option name="LAST_COMMIT_MESSAGE" value="设置界面初始化" />
+    <MESSAGE value="设置界面……" />
+    <option name="LAST_COMMIT_MESSAGE" value="设置界面……" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -907,14 +916,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/router/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="15" column="48" lean-forward="false" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/common/service/game.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
@@ -922,14 +923,6 @@
           <folding>
             <element signature="e#61#90#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/common/service/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="5" lean-forward="false" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -941,12 +934,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/common/service/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="5" lean-forward="false" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/router/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="15" column="48" lean-forward="false" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderer/pages/config.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="10" lean-forward="true" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
+        <state relative-caret-position="433">
+          <caret line="62" column="13" lean-forward="true" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
           <folding>
-            <element signature="e#731#782#0" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#el-col#1;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#833#884#0" expanded="true" />
           </folding>
         </state>
       </provider>

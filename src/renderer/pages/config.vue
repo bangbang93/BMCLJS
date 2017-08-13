@@ -6,6 +6,8 @@
       </el-menu>
     </el-col>
     <el-col :span="20" class="bmcl-setting-container">
+      <el-button type="primary" class="btn-save">保存</el-button>
+      <div style="clear: both"></div>
       <el-card class="block" header="游戏">
         aa
       </el-card>
@@ -28,8 +30,10 @@
   import ElCol from 'element-ui/packages/col/src/col'
   import ElMenu from '../../../node_modules/element-ui/packages/menu/src/menu'
   import ElMenuItem from '../../../node_modules/element-ui/packages/menu/src/menu-item'
+  import ElButton from '../../../node_modules/element-ui/packages/button/src/button'
   export default {
     components: {
+      ElButton,
       ElMenuItem,
       ElMenu,
       ElCol}
@@ -55,5 +59,10 @@
   .bmcl-setting-container {
     overflow: scroll;
     height: 100%;
+  }
+  .btn-save {
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
   }
 </style>
