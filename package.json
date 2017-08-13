@@ -23,7 +23,7 @@
   },
   "build": {
     "productName": "bmcljs",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "com.bangbang93.bmclj",
     "directories": {
       "output": "build"
     },
