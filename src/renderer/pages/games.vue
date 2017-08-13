@@ -42,10 +42,13 @@
     },
     methods: {
       onSelect (index) {
-        console.log(index);
+        for (const version of this.vm.versions) {
+          if (version.name === index) {
+            alert(version.versionPath);
+          }
+        }
       },
       async refresh () {
-//        this.vm.versions = new Array(20).fill({name: '1.12'}).map((version, index) => ({name: `1.12(${index})`}));
         this.vm.versions = await GameService.refresh();
       }
     }
