@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'game',
-      component: require('../pages/index.vue'),
+      component: require('../pages/games.vue'),
     },
     {
       path: '/test',
