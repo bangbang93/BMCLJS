@@ -1,10 +1,10 @@
 <template>
   <div class="game-selector">
-    <el-col :span="6" v-for="version in versions"  >
+    <el-col :span="6" v-for="version in versions" :key="version.name"  >
       <el-card class="game-versions">
         <div slot="header" class="version-name">
           {{ version.name }}
-          <el-button class="button" size="small" type="primary">启动</el-button>
+          <el-button class="button" size="small" type="primary" @click="onStart(version.name)">启动</el-button>
         </div>
         <div>
           <el-row>
@@ -32,15 +32,10 @@
     name      : 'GameSelector',
     props     : {
       versions: Array,
-      selected: {
-        type: String,
-        required: false,
-      }
     },
     methods   : {
-      onSelect (index) {
-        this.$emit('select', index);
-        this.$emit('update:selected', index);
+      onStart (index) {
+        this.$emit('start', index);
       }
     }
   };
