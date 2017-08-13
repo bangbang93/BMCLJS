@@ -35,7 +35,7 @@
     },
     methods   : {
       onStart (index) {
-        this.$emit('start', index);
+        this.$emit('select', index);
       }
     }
   };

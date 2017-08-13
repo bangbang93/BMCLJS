@@ -1,7 +1,7 @@
 <template>
     <el-row class="game-selector">
         <el-col :span="24" class="game-selector">
-          <game-selector :versions="vm.versions" @start="onSelect"></game-selector>
+          <game-selector :versions="vm.versions" @select="onSelect"></game-selector>
         </el-col>
     </el-row>
 </template>
@@ -11,7 +11,8 @@
   export default {
     components: {
       ElCol,
-      GameSelector},
+      GameSelector
+    },
     data () {
       return {
         vm: {
