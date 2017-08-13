@@ -1,10 +1,7 @@
 <template>
     <el-row class="game-selector">
-        <el-col :span="4" class="game-selector">
+        <el-col :span="24" class="game-selector">
           <game-selector :versions="vm.versions" @select="onSelect" :selected.sync="vm.selected"></game-selector>
-        </el-col>
-        <el-col :span="8">
-          {{ vm.selected }}
         </el-col>
     </el-row>
 </template>

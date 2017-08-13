@@ -33,9 +33,14 @@
     padding-left: 50px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+    width: 100%;
   }
   #app,
   .container {
+    margin-top: 60px;
     height: calc(100% - 60px);
   }
 </style>

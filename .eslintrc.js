@@ -24,5 +24,6 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'semi': [0, 'always', {'omitLastInOneLineBlock': true}],
     'comma-dangle': [2, 'only-multiline'],
+    'key-spacing': 0,
   }
 };
