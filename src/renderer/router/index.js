@@ -1,18 +1,23 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: '/',
+      name: 'game',
+      component: require('../pages/index.vue'),
+    },
+    {
+      path: '/test',
       name: 'landing-page',
-      component: require('@/components/LandingPage')
+      component: require('../components/LandingPage.vue'),
     },
     {
       path: '*',
-      redirect: '/'
-    }
-  ]
-})
+      redirect: '/',
+    },
+  ],
+});
