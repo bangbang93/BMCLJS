@@ -14,7 +14,8 @@
 <script>
   import GameSelector from '../components/game/game-selector';
   import ElCol from 'element-ui/packages/col/src/col';
-  import ElInput from '../../../node_modules/element-ui/packages/input/src/input'
+  import ElInput from '../../../node_modules/element-ui/packages/input/src/input';
+  import * as GameService from '../../common/service/game';
   export default {
     components: {
       ElInput,
@@ -44,7 +45,8 @@
         console.log(index);
       },
       async refresh () {
-        this.vm.versions = new Array(20).fill({name: '1.12'}).map((version, index) => ({name: `1.12(${index})`}));
+//        this.vm.versions = new Array(20).fill({name: '1.12'}).map((version, index) => ({name: `1.12(${index})`}));
+        this.vm.versions = await GameService.refresh();
       }
     }
   };

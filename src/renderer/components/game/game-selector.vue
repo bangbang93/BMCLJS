@@ -6,16 +6,7 @@
           {{ version.name }}
           <el-button class="button" size="small" type="primary" @click="onStart(version.name)">启动</el-button>
         </div>
-        <div>
-          <el-row>
-            <el-col :span="12">
-              <span>名称</span>
-            </el-col>
-            <el-col :span="12">
-              <span> {{ version.name }}</span>
-            </el-col>
-          </el-row>
-        </div>
+        <card-body :version="version"></card-body>
       </el-card>
     </el-col>
   </div>
@@ -24,8 +15,10 @@
   import ElCard from '../../../../node_modules/element-ui/packages/card/src/main'
   import ElButton from '../../../../node_modules/element-ui/packages/button/src/button'
   import ElCol from 'element-ui/packages/col/src/col'
+  import CardBody from './card-body'
   export default {
     components: {
+      CardBody,
       ElCol,
       ElButton,
       ElCard},

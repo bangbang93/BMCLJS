@@ -57,8 +57,11 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "bluebird": "^3.5.0",
     "element-ui": "^1.4.2",
+    "mz": "^2.6.0",
     "nedb": "^1.8.0",
+    "nedb-promise": "^2.0.1",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
     "vue": "^2.3.3",
