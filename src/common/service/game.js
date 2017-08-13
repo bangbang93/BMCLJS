@@ -6,7 +6,7 @@ import db from './datastore';
 import { fs } from 'mz';
 import npath from 'path';
 
-export const refresh = async function refresh () {
+export const refresh = async function () {
   let paths = await db.findOne({
     key: 'settings.path'
   });

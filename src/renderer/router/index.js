@@ -11,6 +11,11 @@ export default new Router({
       component: require('../pages/games.vue'),
     },
     {
+      path: '/config',
+      name: 'config',
+      component: require('../pages/config.vue'),
+    },
+    {
       path: '/test',
       name: 'landing-page',
       component: require('../components/LandingPage.vue'),

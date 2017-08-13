@@ -7,6 +7,19 @@ const path = require('path');
 const app = require('electron').app;
 const fs = require('mz').fs;
 
+export const addPath = async function (path) {
+  let paths = await db.findOne({
+    key: 'settings.path'
+  });
+  paths = paths.value;
+  paths.push(path);
+  return db.update({
+    value: paths,
+  }, {
+    key: 'setting.path',
+  });
+}
+
 async function main () {
   const LOCK_FILE = path.join(app.getPath('appData'), 'bmcljs.lock');
   if (!await fs.exists(LOCK_FILE)) {
