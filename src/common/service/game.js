@@ -45,6 +45,7 @@ export const refresh = async function () {
         if (content && content['minecraftArguments']) {
           jsonFile = path;
           json = content;
+          break;
         }
       }
       versions.push({
