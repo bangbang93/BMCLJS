@@ -48,8 +48,10 @@
       border: #ccc solid 1px;
       border-radius: 4px;
       padding: 20px;
+      box-shadow: none;
       &:hover {
-        box-shadow: #ccc 2px 2px 2px 2px;
+        box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
+        transition: 0.2s;
       }
     }
   }
