@@ -41,3 +41,12 @@ export const refresh = async function () {
   }
   return versions;
 }
+
+export const findByName = async function (name) {
+  const games = await refresh();
+  for (const game of games) {
+    if (game.name === name) {
+      return game;
+    }
+  }
+}
