@@ -64,7 +64,7 @@
         this.directory.paths = await ConfigService.getPaths();
       },
       onSelect (index) {
-        this.vm.activeName = index;
+        this.activeName = index;
         const container = document.querySelector('.bmcl-setting-container');
         const target = document.getElementById(index).offsetTop;
         const diff = container.scrollTop - target;
