@@ -3,8 +3,8 @@
     <div class="game-selector">
       <el-col :span="6" v-for="version in versions" :key="version.name"  >
         <el-card class="game-versions">
-          <div slot="header" class="version-name">
-            {{ version.name }}
+          <div slot="header">
+            <div class="bmcl-game-version-name">{{ version.name }}</div>
             <el-button class="button" size="small" type="primary" @click="onStart(version.name)">启动</el-button>
           </div>
           <card-body :version="version"></card-body>
@@ -49,5 +49,14 @@
     .button {
       float: right;
     }
+  }
+  .bmcl-game-version-name {
+    max-width: calc(100% - 50px);
+    display: inline-block;
+    line-height: 100%;
+    vertical-align: middle;
+    text-overflow: '...';
+    white-space: nowrap;
+    overflow: hidden;
   }
 </style>
