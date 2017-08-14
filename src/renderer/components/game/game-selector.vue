@@ -1,14 +1,16 @@
 <template>
-  <div class="game-selector">
-    <el-col :span="6" v-for="version in versions" :key="version.name"  >
-      <el-card class="game-versions">
-        <div slot="header" class="version-name">
-          {{ version.name }}
-          <el-button class="button" size="small" type="primary" @click="onStart(version.name)">启动</el-button>
-        </div>
-        <card-body :version="version"></card-body>
-      </el-card>
-    </el-col>
+  <div>
+    <div class="game-selector">
+      <el-col :span="6" v-for="version in versions" :key="version.name"  >
+        <el-card class="game-versions">
+          <div slot="header" class="version-name">
+            {{ version.name }}
+            <el-button class="button" size="small" type="primary" @click="onStart(version.name)">启动</el-button>
+          </div>
+          <card-body :version="version"></card-body>
+        </el-card>
+      </el-col>
+    </div>
   </div>
 </template>
 <script>
@@ -43,6 +45,7 @@
     display: inline;
     width: 90%;
     margin: 20px auto;
+    height: 200px;
     .button {
       float: right;
     }

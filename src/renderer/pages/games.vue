@@ -1,15 +1,19 @@
 <template>
-    <el-row class="game-selector">
-        <el-col :span="17" :offset="2">
-          <el-input v-model="vm.filter" placeholder="搜索"></el-input>
-        </el-col>
-        <el-col :span="4" :offset="1">
-          <el-button class="btn-refresh" @click="refresh" type="primary">刷新</el-button>
-        </el-col>
-        <el-col :span="24" class="game-selector">
-          <game-selector :versions="vm.versions | version(vm.filter)" @select="onSelect"></game-selector>
-        </el-col>
+  <div class="bmcl-game-page ">
+    <el-row class="bmcl-game-search">
+      <el-col :span="17" :offset="2">
+        <el-input v-model="vm.filter" placeholder="搜索"></el-input>
+      </el-col>
+      <el-col :span="4" :offset="1">
+        <el-button class="btn-refresh" @click="refresh" type="primary">刷新</el-button>
+      </el-col>
     </el-row>
+    <el-row class="game-board" >
+      <el-col :span="24">
+        <game-selector :versions="vm.versions | version(vm.filter)" @select="onSelect"></game-selector>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 <script>
   import GameSelector from '../components/game/game-selector';
@@ -55,11 +59,15 @@
   };
 </script>
 <style scoped="" lang="scss">
-  .game-selector {
+  .bmcl-game-page {
     height: 100%;
     padding: 10px;
   }
-  .game-versions {
+  .bmcl-game-search {
+    padding: 10px auto 10px;
+  }
+  .game-board {
+    height: calc(100% - 46px);
     overflow: scroll;
   }
 </style>
