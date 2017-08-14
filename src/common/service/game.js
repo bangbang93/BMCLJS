@@ -5,6 +5,7 @@
 import { fs } from 'mz';
 import npath from 'path';
 import * as ConfigService from './config';
+import Launcher from '../../main/launcher/launcher';
 
 export const refresh = async function () {
   const paths = await ConfigService.getPaths();
@@ -33,13 +34,39 @@ export const refresh = async function () {
       if (!files.some((file) => file.match(/.json$/))) {
         continue;
       }
+      let jsonFile;
+      let json;
+      for (const file of files) {
+        if (!file.endsWith('.json')) continue;
+        const path = npath.join(detailPath, file);
+        let content = await fs.readFile(path);
+        try {
+          content = JSON.parse(content);
+        } catch (e) {}
+        if (content && content['minecraftArguments']) {
+          jsonFile = path;
+          json = content;
+        }
+      }
       versions.push({
         name: dir,
         versionPath: detailPath,
+        minecraftPath: path,
+        jsonFile,
+        json,
       });
     }
   }
   return versions;
+}
+
+export const start = async function (version) {
+  const launcher = new Launcher(version.versionPath, version.minecraftPath, {}, '/usr/bin/java', {
+    json: version.json
+  })
+  const cp = await launcher.start();
+  cp.stdout.pipe(process.stdout);
+  cp.stderr.pipe(process.stderr);
 }
 
 export const findByName = async function (name) {

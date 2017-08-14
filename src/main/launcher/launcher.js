@@ -37,7 +37,7 @@ class Launcher extends EventEmitter {
     await this._cleanNatives();
     this._arguments.push(`-Djava.library.path=${this._nativesPath}`);
     this.emit('progress', 'resolveLibraries');
-    await this._setupLibaries();
+    await this._setupLibraries();
     this.emit('progress', 'resolveNatives');
     await fs.mkdir(this._nativesPath);
     await this._setupNatives();
@@ -51,10 +51,12 @@ class Launcher extends EventEmitter {
     this._arguments.push(this.opts.json['mainClass']);
     this._mcArguments();
     this.emit('progress', 'launch');
+    console.log(this._arguments);
     this.process = cp.spawn(this.java, this._arguments, {
       cwd: this.minecraftPath,
       stdio: 'pipe',
     });
+    return this.process;
   }
 
   async _checkJava () {
@@ -69,29 +71,31 @@ class Launcher extends EventEmitter {
       const path = npath.join(this.versionPath, dir);
       const stat = await fs.stat(path);
       if (!stat.isDirectory()) continue;
-      await (rm(path));
+      await rm(path);
     }
   }
 
-  async _setupLibaries () {
+  async _setupLibraries () {
     const libraries = this.opts.json.libraries;
     const librariesPath = [];
     for (const library of libraries) {
-      if (library.rules) return;
+      if (library['natives']) continue;
       if (!library.path) {
         library.path = library['downloads']['artifact']['path'] || JavaLibraryHelper.getPath(library.name);
       }
-      if (!await fs.exists(npath.join(this._libraryPath, library.path))) {
+      const path = npath.join(this._libraryPath, library.path);
+      if (!await fs.exists(path)) {
         this.emit('missing', library);
         this._missingLibrary.push(library);
       }
 
-      librariesPath.push(library.push);
+      librariesPath.push(path);
     }
+    const jar = this.opts.json.jar || this.opts.json.id
     if (this.opts.json.inherbitsFrom) {
-      librariesPath.push(npath.join(this.versionPath, `../${this.opts.json.inherbitsFrom}/${this.opts.json.jar}.jar`));
+      librariesPath.push(npath.join(this.versionPath, `../${this.opts.json.inherbitsFrom}/${jar}.jar`));
     } else {
-      librariesPath.push(npath.join(this.versionPath, `${this.opts.json.jar}.jar`));
+      librariesPath.push(npath.join(this.versionPath, `${jar}.jar`));
     }
 
     this._arguments.push(`-cp${librariesPath.join(';')}`);
@@ -101,19 +105,31 @@ class Launcher extends EventEmitter {
   async _setupNatives () {
     const libraries = this.opts.json.libraries;
     for (const library of libraries) {
-      if (!library.rules) return;
+      if (!library['natives']) continue;
       if (!library.path) {
         library.path = JavaLibraryHelper.getPath(library.name);
       }
       const rules = library.rules;
-      const result = rules.reduce((result, rule) => {
-        if (rule.os === getOs()) {
-          return rule.action;
+      let result = 'allow';
+      if (rules) {
+        if (rules.length === 1) {
+          const rule = rules[0];
+          if (rule.os === getOs()) {
+            result = rule.action;
+          } else {
+            result = rule.action === 'allow' ? 'disallow' : 'allow';
+          }
+        } else {
+          rules.reduce((result, rule) => {
+            if (rule.os === getOs()) {
+              return rule.action;
+            }
+            return result;
+          }, result);
         }
-        return result;
-      }, 'allow');
+      }
       if (result === 'disallow') {
-        return;
+        continue;
       }
       const natives = library['natives'][getOs()];
       const artifact = library['downloads']['classifiers'][natives];
@@ -160,7 +176,7 @@ export default Launcher;
 
 function rm (f, opts) {
   return new Promise((resolve, reject) => {
-    rimraf(f, opts, function (err) {
+    rimraf(f, opts || {}, function (err) {
       if (err) return reject(err);
       resolve();
     })
@@ -172,10 +188,14 @@ let _os;
 function getOs () {
   if (_os) return _os;
   const os = require('os');
+  const platform = os.platform();
   _os = {
     'windows': 'windows',
     'linux': 'linux',
     'darwin': 'osx',
-  }[os.platform()];
+  }[platform];
+  if (platform === 'windows') {
+    _os = _os.replace('${arch}', os.arch()); // eslint-disable-line no-template-curly-in-string
+  }
   return _os;
 }

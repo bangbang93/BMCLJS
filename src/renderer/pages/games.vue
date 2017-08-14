@@ -48,7 +48,7 @@
       onSelect (index) {
         for (const version of this.vm.versions) {
           if (version.name === index) {
-            alert(version.versionPath);
+            GameService.start(version);
             break;
           }
         }
