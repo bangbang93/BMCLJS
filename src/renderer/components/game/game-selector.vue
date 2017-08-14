@@ -44,7 +44,7 @@
     float: left;
     display: inline;
     width: 90%;
-    margin: 20px auto;
+    margin: 20px 5%;
     height: 200px;
     .button {
       float: right;
