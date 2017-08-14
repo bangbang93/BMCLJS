@@ -35,7 +35,7 @@
     }
   };
 </script>
-<style scoped="" lang="scss">
+<style lang="scss">
   .game-selector {
     height: 100%;
     width: 100%;
@@ -48,6 +48,9 @@
     height: 200px;
     .button {
       float: right;
+    }
+    .el-card__header {
+      background-color: #eee
     }
   }
   .bmcl-game-version-name {

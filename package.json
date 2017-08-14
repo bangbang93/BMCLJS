@@ -63,6 +63,7 @@
     "nedb": "^1.8.0",
     "nedb-promise": "^2.0.1",
     "node-sass": "^4.5.3",
+    "rimraf": "^2.6.1",
     "sass-loader": "^6.0.6",
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",

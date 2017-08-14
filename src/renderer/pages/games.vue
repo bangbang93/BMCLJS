@@ -49,6 +49,7 @@
         for (const version of this.vm.versions) {
           if (version.name === index) {
             alert(version.versionPath);
+            break;
           }
         }
       },
@@ -64,7 +65,7 @@
     padding: 10px;
   }
   .bmcl-game-search {
-    padding: 10px auto 10px;
+    padding-bottom: 10px;
   }
   .game-board {
     height: calc(100% - 46px);
