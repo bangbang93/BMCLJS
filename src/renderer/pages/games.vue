@@ -73,6 +73,7 @@
             console.log('running');
             break;
           case 'missing-library':
+            // TODO missing library
             console.log(arg.missing);
             break;
           case 'error':
