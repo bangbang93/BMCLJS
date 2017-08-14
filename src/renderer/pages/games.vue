@@ -20,6 +20,8 @@
   import ElCol from 'element-ui/packages/col/src/col';
   import ElInput from '../../../node_modules/element-ui/packages/input/src/input';
   import * as GameService from '../../common/service/game';
+  import {ipcRenderer} from 'electron';
+
   export default {
     components: {
       ElInput,
@@ -48,7 +50,7 @@
       onSelect (index) {
         for (const version of this.vm.versions) {
           if (version.name === index) {
-            GameService.start(version);
+            start(version);
             break;
           }
         }
@@ -58,6 +60,22 @@
       }
     }
   };
+
+  function start (version) {
+    ipcRenderer.send('game:start', {version});
+    ipcRenderer.once('game:started', (event, arg) => {
+      switch (arg.status) {
+        case 'success':
+          console.log('running');
+          break;
+        case 'missing-library':
+          console.log(arg.missing);
+          break;
+        case 'error':
+          alert(arg.error);
+      }
+    });
+  }
 </script>
 <style scoped="" lang="scss">
   .bmcl-game-page {

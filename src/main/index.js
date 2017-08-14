@@ -3,6 +3,7 @@
 import { app, BrowserWindow } from 'electron';
 
 require('../common/service/config');
+require('./service/game');
 
 /**
  * Set `__static` path to static files in production

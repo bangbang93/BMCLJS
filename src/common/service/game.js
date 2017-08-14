@@ -5,7 +5,6 @@
 import { fs } from 'mz';
 import npath from 'path';
 import * as ConfigService from './config';
-import Launcher from '../../main/launcher/launcher';
 
 export const refresh = async function () {
   const paths = await ConfigService.getPaths();
@@ -58,15 +57,6 @@ export const refresh = async function () {
     }
   }
   return versions;
-}
-
-export const start = async function (version) {
-  const launcher = new Launcher(version.versionPath, version.minecraftPath, {}, '/usr/bin/java', {
-    json: version.json
-  })
-  const cp = await launcher.start();
-  cp.stdout.pipe(process.stdout);
-  cp.stderr.pipe(process.stderr);
 }
 
 export const findByName = async function (name) {
