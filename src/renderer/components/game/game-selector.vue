@@ -5,7 +5,7 @@
         <el-card class="game-versions">
           <div slot="header">
             <div class="bmcl-game-version-name">{{ version.name }}</div>
-            <el-button class="button" size="small" type="primary" @click="onStart(version.name)">启动</el-button>
+            <el-button class="button" size="small" type="primary" @click="onStart(version.name)" :disabled="starting">启动</el-button>
           </div>
           <card-body :version="version"></card-body>
         </el-card>
@@ -14,19 +14,15 @@
   </div>
 </template>
 <script>
-  import ElCard from '../../../../node_modules/element-ui/packages/card/src/main'
-  import ElButton from '../../../../node_modules/element-ui/packages/button/src/button'
-  import ElCol from 'element-ui/packages/col/src/col'
   import CardBody from './card-body'
   export default {
     components: {
       CardBody,
-      ElCol,
-      ElButton,
-      ElCard},
+    },
     name      : 'GameSelector',
     props     : {
       versions: Array,
+      starting: Boolean,
     },
     methods   : {
       onStart (index) {

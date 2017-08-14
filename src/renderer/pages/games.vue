@@ -10,7 +10,7 @@
     </el-row>
     <el-row class="game-board" >
       <el-col :span="24">
-        <game-selector :versions="vm.versions | version(vm.filter)" @select="onSelect"></game-selector>
+        <game-selector :versions="vm.versions | version(vm.filter)" @select="onSelect" :starting="starting"></game-selector>
       </el-col>
     </el-row>
   </div>
@@ -35,7 +35,8 @@
           versions: [],
           selected: '',
           filter: '',
-        }
+        },
+        starting: false,
       };
     },
     filters: {
@@ -47,10 +48,12 @@
       this.refresh();
     },
     methods: {
-      onSelect (index) {
+      async onSelect (index) {
+        this.starting = true;
         for (const version of this.vm.versions) {
           if (version.name === index) {
-            start(version);
+            await start(version);
+            this.starting = false;
             break;
           }
         }
@@ -62,19 +65,22 @@
   };
 
   function start (version) {
-    ipcRenderer.send('game:start', {version});
-    ipcRenderer.once('game:started', (event, arg) => {
-      switch (arg.status) {
-        case 'success':
-          console.log('running');
-          break;
-        case 'missing-library':
-          console.log(arg.missing);
-          break;
-        case 'error':
-          alert(arg.error);
-      }
-    });
+    return new Promise((resolve) => {
+      ipcRenderer.send('game:start', {version});
+      ipcRenderer.once('game:started', (event, arg) => {
+        switch (arg.status) {
+          case 'success':
+            console.log('running');
+            break;
+          case 'missing-library':
+            console.log(arg.missing);
+            break;
+          case 'error':
+            alert(arg.error);
+        }
+        resolve();
+      });
+    })
   }
 </script>
 <style scoped="" lang="scss">

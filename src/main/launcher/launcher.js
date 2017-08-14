@@ -92,8 +92,8 @@ class Launcher extends EventEmitter {
       librariesPath.push(path);
     }
     const jar = this.opts.json.jar || this.opts.json.id
-    if (this.opts.json.inherbitsFrom) {
-      librariesPath.push(npath.join(this.versionPath, `../${this.opts.json.inherbitsFrom}/${jar}.jar`));
+    if (this.opts.json.inheritsFrom) {
+      librariesPath.push(npath.join(this.versionPath, `../${this.opts.json.inheritsFrom}/${jar}.jar`));
     } else {
       librariesPath.push(npath.join(this.versionPath, `${jar}.jar`));
     }

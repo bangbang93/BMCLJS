@@ -6,6 +6,7 @@ import Launcher from '../../main/launcher/launcher';
 const { ipcMain } = require('electron');
 
 export const start = async function (version) {
+  // TODO inheritsFrom
   const launcher = new Launcher(version.versionPath, version.minecraftPath, {}, '/usr/bin/java', {
     json: version.json
   });
