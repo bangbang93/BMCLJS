@@ -5,9 +5,12 @@
 const Unzip = require('unzip');
 const createReadStream = require('fs').createReadStream;
 
-export function getPath (fullName) {
+export function getPath (fullName, native = '') {
+  if (native) {
+    native = `-${native}`;
+  }
   const [pkg, name, version] = fullName.split(':');
-  return pkg.split('.').concat([name, version, `${name}-${version}.jar`]).join('/');
+  return pkg.split('.').concat([name, version, `${name}-${version}${native}.jar`]).join('/');
 }
 
 export const unzip = async function (file, path) {

@@ -13,6 +13,7 @@ export const start = async function (version) {
   const cp = await launcher.start();
   cp.stdout.pipe(process.stdout);
   cp.stderr.pipe(process.stderr);
+  return launcher;
 }
 
 ipcMain.on('game:start', async (event, arg) => {
@@ -31,9 +32,10 @@ ipcMain.on('game:start', async (event, arg) => {
         });
         break;
       default:
+        console.error(e);
         event.sender.send('game:started', {
           status: 'error',
-          error: e
+          error: e.message,
         });
     }
   }

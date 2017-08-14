@@ -41,10 +41,12 @@ class Launcher extends EventEmitter {
     this.emit('progress', 'resolveNatives');
     await fs.mkdir(this._nativesPath);
     await this._setupNatives();
+    console.log(this._arguments)
     if (this._missingLibrary.length !== 0) {
       this.emit('missing_all', this._missingLibrary);
       let err = new Error('missing library');
       err.missing = this._missingLibrary;
+      err.launcher = this;
       throw err;
     }
     this.emit('progress', 'mergeArguments');
@@ -62,6 +64,14 @@ class Launcher extends EventEmitter {
   async _checkJava () {
     if (!fs.exists(this.java)) throw new Error('java not found');
     this._arguments.push(`-Xmx${this.opts.javaxmx}M`);
+    const extArg = this.opts.extArg;
+    if (extArg) {
+      if (typeof extArg === 'string') {
+        extArg.split(' ').forEach((arg) => this._arguments.push(arg));
+      } else {
+        extArg.forEach((arg) => this._arguments.push(arg));
+      }
+    }
   }
 
   async _cleanNatives () {
@@ -81,7 +91,11 @@ class Launcher extends EventEmitter {
     for (const library of libraries) {
       if (library['natives']) continue;
       if (!library.path) {
-        library.path = library['downloads']['artifact']['path'] || JavaLibraryHelper.getPath(library.name);
+        if (library['downloads']) {
+          library.path = library['downloads']['artifact']['path'];
+        } else {
+          library.path = JavaLibraryHelper.getPath(library.name);
+        }
       }
       const path = npath.join(this._libraryPath, library.path);
       if (!await fs.exists(path)) {
@@ -98,7 +112,8 @@ class Launcher extends EventEmitter {
       librariesPath.push(npath.join(this.versionPath, `${jar}.jar`));
     }
 
-    this._arguments.push(`-cp${librariesPath.join(';')}`);
+    this._arguments.push('-cp');
+    this._arguments.push(`${librariesPath.join(npath.delimiter)}`);
     return librariesPath.join(';');
   }
 
@@ -132,9 +147,15 @@ class Launcher extends EventEmitter {
         continue;
       }
       const natives = library['natives'][getOs()];
-      const artifact = library['downloads']['classifiers'][natives];
-      const path = artifact['path'] || JavaLibraryHelper.getPath(library.name);
-      if (!await fs.exists(npath.join(this._libraryPath, library.path))) {
+      let path;
+      if (library['downloads']) {
+        const artifact = library['downloads']['classifiers'][natives];
+        path = artifact['path'];
+      } else {
+        path = JavaLibraryHelper.getPath(library.name, natives);
+      }
+      path = npath.join(this._libraryPath, path);
+      if (!await fs.exists(path)) {
         this.emit('missing', library);
         this._missingLibrary.push(library);
       } else {
@@ -166,7 +187,7 @@ class Launcher extends EventEmitter {
         args[i] = values[e];
       }
     });
-    this._arguments.concat(args);
+    args.forEach((arg) => this._arguments.push(arg));
     return args;
 /* eslint-enable no-template-curly-in-string */
   }

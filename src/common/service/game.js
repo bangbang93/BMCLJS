@@ -50,7 +50,7 @@ export const refresh = async function () {
       versions.push({
         name: dir,
         versionPath: detailPath,
-        minecraftPath: path,
+        minecraftPath: npath.join(versionPath, '..'),
         jsonFile,
         json,
       });
