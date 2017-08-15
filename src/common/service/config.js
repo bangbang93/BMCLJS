@@ -53,6 +53,28 @@ export const delPath = async function (path) {
   });
 }
 
+export const getConfig = async function (key) {
+  const value = await db.findOne({
+    key: `config.${key}`,
+  });
+  if (value) {
+    return value.value;
+  }
+  return null;
+}
+
+export const setConfig = async function (key, value) {
+  return db.update({
+    key: `config.${key}`,
+  }, {
+    $set: {
+      value,
+    }
+  }, {
+    upsert: true,
+  })
+}
+
 async function main () {
   const LOCK_FILE = path.join(app.getPath('userData'), 'bmcljs.lock');
   if (!await fs.exists(LOCK_FILE)) {
@@ -64,12 +86,12 @@ async function main () {
 async function init () {
   const VANILLA_MINECRAFT_PATH = path.join(app.getPath('appData'), 'minecraft');
   if (await fs.exists(VANILLA_MINECRAFT_PATH)) {
-    console.log(db)
     await db.insert({
       key: 'config.path',
       value: [VANILLA_MINECRAFT_PATH]
-    })
+    });
   }
+  await setConfig('mirror', 'bmclapi');
 }
 
 main().catch(console.error);

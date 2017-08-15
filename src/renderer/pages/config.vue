@@ -2,29 +2,28 @@
   <el-row class="bmcl-setting">
     <el-col :span="4" class="bmcl-setting">
       <el-menu mode="vertical" theme="light" class="bmcl-setting bmcl-setting-menu" defaultActive="game" @select="onSelect">
-        <el-menu-item :class="{'is-active': activeName === 'directory'}" index="directory">目录</el-menu-item>
-        <el-menu-item :class="{'is-active': activeName === 'game2'}" index="game2">游戏2</el-menu-item>
-        <el-menu-item :class="{'is-active': activeName === 'game3'}" index="game3">游戏3</el-menu-item>
-        <el-menu-item :class="{'is-active': activeName === 'game4'}" index="game4">游戏4</el-menu-item>
-        <el-menu-item :class="{'is-active': activeName === 'game5'}" index="game5">游戏5</el-menu-item>
+        <el-menu-item :class="{'is-active': activeName === config.index}" :index="config.index" v-for="config in configs">
+          {{config.title}}
+        </el-menu-item>
       </el-menu>
     </el-col>
     <el-col :span="20" class="bmcl-setting-container">
-      <el-button type="primary" class="btn-save">保存</el-button>
-      <div style="clear: both"></div>
-      <el-collapse v-model="activeName">
-        <el-collapse-item name="directory" title="目录" id="directory">
+      <el-collapse v-model="activeName" :accordion="true">
+        <el-collapse-item :name="configs[0].index" :title="configs[0].title" :id="configs[0].index">
           <el-table :data="tablePath" style="width: 100%" @selection-change="onPathSelect">
             <el-table-column type="selection" width="50"></el-table-column>
             <el-table-column prop="path" label="路径"></el-table-column>
           </el-table>
-          <el-button-group  style="margin-top: 5px" >
+          <el-button-group style="margin-top: 5px" >
             <el-button type="danger" size="small" @click="onPathDelete">删除</el-button>
             <el-button type="success" size="small" @click="onPathAdd">添加</el-button>
           </el-button-group>
         </el-collapse-item>
-        <el-collapse-item name="game2" title="游戏2" id="game2">
-          aa
+        <el-collapse-item :name="configs[1].index" :title="configs[1].title" :id="configs[1].index">
+          <el-radio-group v-model="download.mirror" @change="onMirrorChange">
+            <el-radio label="BMCLAPI" name="mirror">BMCLAPI</el-radio>
+            <el-radio label="official" name="mirror">官方源</el-radio>
+          </el-radio-group>
         </el-collapse-item>
         <el-collapse-item name="game3" title="游戏3" id="game3">
           aa
@@ -36,6 +35,8 @@
           aa
         </el-collapse-item>
       </el-collapse>
+      <el-button type="primary" class="btn-save" @click="onSave">保存</el-button>
+      <div style="clear: both"></div>
     </el-col>
   </el-row>
 </template>
@@ -45,10 +46,25 @@
     data () {
       return {
         activeName: 'directory',
+        configs: [
+          {
+            title: '目录',
+            index: 'directory',
+          }, {
+            title: '下载',
+            index: 'download',
+          }
+        ],
         directory: {
           paths: [],
           selection: [],
         },
+        download: {
+          mirror: 'bmclapi'
+        },
+        java: {
+          jres: [],
+        }
       };
     },
     mounted () {
@@ -62,6 +78,10 @@
     methods: {
       async initData () {
         this.directory.paths = await ConfigService.getPaths();
+        this.download.mirror = await ConfigService.getConfig('mirror');
+      },
+      onSave () {
+        console.log(this);
       },
       onSelect (index) {
         this.activeName = index;
@@ -77,6 +97,9 @@
           requestAnimationFrame(animate);
         }
         animate();
+      },
+      onMirrorChange (label) {
+        return ConfigService.setConfig('mirror', label);
       },
       async onPathDelete () {
         const promise = this.directory.selection.map((selection) => ConfigService.delPath(selection.path));
