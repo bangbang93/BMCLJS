@@ -5,7 +5,10 @@
 const Unzip = require('unzip');
 const createReadStream = require('fs').createReadStream;
 
-export function getPath (fullName, native = '') {
+let _os;
+
+export function getPath (fullName, native) {
+  native = native || '';
   if (native) {
     native = `-${native}`;
   }
@@ -22,4 +25,19 @@ export const unzip = async function (file, path) {
       .on('close', resolve)
       .on('error', reject);
   })
+}
+
+export function getOs () {
+  if (_os) return _os;
+  const os = require('os');
+  const platform = os.platform();
+  _os = {
+    'windows': 'windows',
+    'linux': 'linux',
+    'darwin': 'osx',
+  }[platform];
+  if (platform === 'windows') {
+    _os = _os.replace('${arch}', os.arch()); // eslint-disable-line no-template-curly-in-string
+  }
+  return _os;
 }

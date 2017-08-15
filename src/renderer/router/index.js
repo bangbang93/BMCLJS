@@ -7,6 +7,12 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'index',
+      // component: require('../components/downloader.vue'),
+      component: require('../pages/games.vue'),
+    },
+    {
+      path: '/game',
       name: 'game',
       component: require('../pages/games.vue'),
     },

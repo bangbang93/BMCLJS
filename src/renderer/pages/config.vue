@@ -2,7 +2,7 @@
   <el-row class="bmcl-setting">
     <el-col :span="4" class="bmcl-setting">
       <el-menu mode="vertical" theme="light" class="bmcl-setting bmcl-setting-menu" defaultActive="game" @select="onSelect">
-        <el-menu-item :class="{'is-active': activeName === config.index}" :index="config.index" v-for="config in configs">
+        <el-menu-item :class="{'is-active': activeName === config.index}" :index="config.index" v-for="config in configs" :key="config.index">
           {{config.title}}
         </el-menu-item>
       </el-menu>

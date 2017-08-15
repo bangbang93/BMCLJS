@@ -1,10 +1,7 @@
 <template>
   <div id="app">
-    <el-menu theme="dark" :default-active="vm.activeIndex" mode="horizontal" @select="onSelect" class="menu" :router="true">
-
-      <el-menu-item index="0" :route="{name: 'game'}">BMCL</el-menu-item>
-      <el-menu-item index="1" :route="{name: 'game'}">游戏列表</el-menu-item>
-      <el-menu-item index="2" :route="{name: 'config'}">设置</el-menu-item>
+    <el-menu theme="dark" :default-active="activeIndex" mode="horizontal" @select="onSelect" class="menu" :router="true">
+      <el-menu-item :index="index + ''" :route="menu.route" v-for="(menu, index) in menuItems" :key="index">{{menu.title}}</el-menu-item>
     </el-menu>
     <router-view class="container"></router-view>
   </div>
@@ -15,9 +12,20 @@
     name: 'bmcljs',
     data () {
       return {
-        vm: {
-          activeIndex: '1',
-        },
+        activeIndex: '0',
+        menuItems: [{
+          route: {name: 'index'},
+          title: 'BMCL',
+        }, {
+          route: {name: 'game'},
+          title: '游戏列表',
+        }, {
+          route: {name: 'config'},
+          title: '设置',
+        }, {
+          route: {name: 'download'},
+          title: '下载',
+        }]
       };
     },
     methods: {

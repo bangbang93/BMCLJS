@@ -17,15 +17,11 @@
 </template>
 <script>
   import GameSelector from '../components/game/game-selector';
-  import ElCol from 'element-ui/packages/col/src/col';
-  import ElInput from '../../../node_modules/element-ui/packages/input/src/input';
-  import * as GameService from '../../common/service/game';
-  import {ipcRenderer} from 'electron';
+  import * as CommonGameService from '../../common/service/game';
+  import * as RendererGameService from '../service/game';
 
   export default {
     components: {
-      ElInput,
-      ElCol,
       GameSelector
     },
     data () {
@@ -59,29 +55,19 @@
         }
       },
       async refresh () {
-        this.vm.versions = await GameService.refresh();
+        this.vm.versions = await CommonGameService.refresh();
       }
     }
   };
 
-  function start (version) {
-    return new Promise((resolve) => {
-      ipcRenderer.send('game:start', {version});
-      ipcRenderer.once('game:started', (event, arg) => {
-        switch (arg.status) {
-          case 'success':
-            console.log('running');
-            break;
-          case 'missing-library':
-            // TODO missing library
-            console.log(arg.missing);
-            break;
-          case 'error':
-            alert(arg.error);
-        }
-        resolve();
-      });
-    })
+  async function start (version) {
+    try {
+      await RendererGameService.start(version);
+    } catch (e) {
+      if (e.message === 'missing-library') {
+        console.error(e.missing);
+      }
+    }
   }
 </script>
 <style scoped="" lang="scss">
