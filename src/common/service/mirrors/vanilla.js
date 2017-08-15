@@ -4,7 +4,7 @@
 'use strict';
 import * as JavaLibraryHelper from '../../helper/java-library';
 
-class MirrorVaillla {
+class MirrorVanilla {
   constructor () {
     this._LIBRARY_SERVER = 'https://libraries.minecraft.net/';
   }
@@ -15,18 +15,40 @@ class MirrorVaillla {
       const natives = library['natives'][JavaLibraryHelper.getOs()];
       if (library['downloads']) {
         const artifact = library['downloads']['classifiers'][natives];
-        url = artifact['path'];
+        url = artifact['url'];
       } else {
-        url = JavaLibraryHelper.getPath(library.name, natives);
+        const path = library.path || JavaLibraryHelper.getPath(library.name, natives);
+        url = this._LIBRARY_SERVER + path;
       }
     } else {
       if (library['downloads']) {
-        url = library['downloads']['artifact']['path'];
+        url = library['downloads']['artifact']['url'];
       } else {
-        url = this._LIBRARY_SERVER + JavaLibraryHelper.getPath(library.name);
+        const path = library.path || JavaLibraryHelper.getPath(library.name);
+        url = this._LIBRARY_SERVER + path;
       }
     }
     return url;
+  }
+
+  getLibraryPath (library) {
+    let path;
+    if (library['natives']) {
+      const natives = library['natives'][JavaLibraryHelper.getOs()];
+      if (library['downloads']) {
+        const artifact = library['downloads']['classifiers'][natives];
+        path = artifact['path'];
+      } else {
+        path = JavaLibraryHelper.getPath(library.name, natives);
+      }
+    } else {
+      if (library['downloads']) {
+        path = library['downloads']['artifact']['path'];
+      } else {
+        path = JavaLibraryHelper.getPath(library.name);
+      }
+    }
+    return path;
   }
 
   getVersionUrl (version) {
@@ -38,4 +60,4 @@ class MirrorVaillla {
   }
 }
 
-export default MirrorVaillla;
+export default MirrorVanilla;

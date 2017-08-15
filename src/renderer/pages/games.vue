@@ -19,6 +19,7 @@
   import GameSelector from '../components/game/game-selector';
   import * as CommonGameService from '../../common/service/game';
   import * as RendererGameService from '../service/game';
+  import * as CommonDownloadService from '../../common/service/download';
 
   export default {
     components: {
@@ -65,7 +66,8 @@
       await RendererGameService.start(version);
     } catch (e) {
       if (e.message === 'missing-library') {
-        console.error(e.missing);
+        const downloadInfo = await CommonDownloadService.getLibrariesDownloadUrls(e.missing);
+        console.log(downloadInfo);
       }
     }
   }

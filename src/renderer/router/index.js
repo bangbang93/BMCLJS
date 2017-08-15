@@ -22,8 +22,8 @@ export default new Router({
       component: require('../pages/config.vue'),
     },
     {
-      path: '/test',
-      name: 'landing-page',
+      path: '/download',
+      name: 'download',
       component: require('../components/LandingPage.vue'),
     },
     {

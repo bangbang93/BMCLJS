@@ -30,7 +30,7 @@ class Launcher extends EventEmitter {
     this._missingLibrary = [];
   }
 
-  async start () {
+  async checkEnv () {
     this.emit('progress', 'checkJava');
     await this._checkJava();
     this.emit('progress', 'cleanNatives');
@@ -41,7 +41,6 @@ class Launcher extends EventEmitter {
     this.emit('progress', 'resolveNatives');
     await fs.mkdir(this._nativesPath);
     await this._setupNatives();
-    console.log(this._arguments)
     if (this._missingLibrary.length !== 0) {
       this.emit('missing_all', this._missingLibrary);
       let err = new Error('missing library');
@@ -52,7 +51,12 @@ class Launcher extends EventEmitter {
     this.emit('progress', 'mergeArguments');
     this._arguments.push(this.opts.json['mainClass']);
     this._mcArguments();
+    this.emit('progress', 'envOK');
+  }
+
+  async start () {
     this.emit('progress', 'launch');
+    await this.checkEnv();
     console.log(this._arguments);
     this.process = cp.spawn(this.java, this._arguments, {
       cwd: this.minecraftPath,
@@ -156,6 +160,7 @@ class Launcher extends EventEmitter {
       }
       path = npath.join(this._libraryPath, path);
       if (!await fs.exists(path)) {
+        library.path = path;
         this.emit('missing', library);
         this._missingLibrary.push(library);
       } else {
