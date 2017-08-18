@@ -9,7 +9,7 @@ export default new Router({
       path: '/',
       name: 'index',
       // component: require('../components/downloader.vue'),
-      component: require('../pages/games.vue'),
+      component: require('../pages/index.vue'),
     },
     {
       path: '/game',

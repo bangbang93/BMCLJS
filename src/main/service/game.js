@@ -5,15 +5,32 @@
 import Launcher from '../../main/launcher/launcher';
 const { ipcMain } = require('electron');
 
+const running = [];
+
 export const start = async function (version) {
   // TODO inheritsFrom
   const launcher = new Launcher(version.versionPath, version.minecraftPath, {}, '/usr/bin/java', {
     json: version.json
   });
+  const p = {
+    version: version,
+    launcher: launcher,
+  };
+  running.push(p);
   const cp = await launcher.start();
   cp.stdout.pipe(process.stdout);
   cp.stderr.pipe(process.stderr);
+  const index = running.indexOf(p);
+  running[index].process = cp;
+  cp.on('exit', () => {
+    const index = running.indexOf(p);
+    running.splice(index, 1);
+  })
   return launcher;
+}
+
+export function getRunning () {
+  return running;
 }
 
 ipcMain.on('game:start', async (event, arg) => {
@@ -40,3 +57,9 @@ ipcMain.on('game:start', async (event, arg) => {
     }
   }
 })
+ipcMain.on('game:running', (event) => {
+  event.returnValue = running.map((p) => ({
+    version: p.version,
+    launcher: p.launcher,
+  }));
+});
