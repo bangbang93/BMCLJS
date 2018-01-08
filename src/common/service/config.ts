@@ -2,7 +2,7 @@
  * Created by bangbang93 on 2017/8/13.
  */
 'use strict';
-import db from './datastore';
+import {config} from './datastore';
 const path = require('path');
 const electron = require('electron');
 const fs = require('mz').fs;
@@ -15,46 +15,34 @@ if (electron.remote) {
 }
 
 export const addPath = async function (path) {
-  let paths = await db.findOne({
+  let paths = await config.findOne({
     key: 'config.path'
   });
   paths = paths.value;
   paths.push(path);
-  return db.update({
-    key: 'config.path',
-  }, {
-    $set: {
-      value: paths,
-    }
-  });
+  return config.update(paths);
 }
 
 export const getPaths = async function () {
-  let paths = await db.findOne({
+  let paths = await config.findOne({
     key: 'config.path',
   });
   return paths.value;
 }
 
 export const delPath = async function (path) {
-  let paths = await db.findOne({
+  let paths = await config.findOne({
     key: 'config.path'
   });
   paths = paths.value;
   const index = paths.indexOf(path);
   if (index === -1) return;
   paths.splice(index, 1);
-  return db.update({
-    key: 'config.path',
-  }, {
-    $set: {
-      value: paths,
-    }
-  });
+  return config.update(paths);
 }
 
 export const getConfig = async function (key) {
-  const value = await db.findOne({
+  const value = await config.findOne({
     key: `config.${key}`,
   });
   if (value) {
@@ -64,14 +52,10 @@ export const getConfig = async function (key) {
 }
 
 export const setConfig = async function (key, value) {
-  return db.update({
+  return config.findAndUpdate({
     key: `config.${key}`,
-  }, {
-    $set: {
-      value,
-    }
-  }, {
-    upsert: true,
+  }, (doc) => {
+    doc.value = value
   })
 }
 
@@ -86,7 +70,7 @@ async function main () {
 async function init () {
   const VANILLA_MINECRAFT_PATH = path.join(app.getPath('appData'), 'minecraft');
   if (await fs.exists(VANILLA_MINECRAFT_PATH)) {
-    await db.insert({
+    await config.insert({
       key: 'config.path',
       value: [VANILLA_MINECRAFT_PATH]
     });

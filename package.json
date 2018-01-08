@@ -56,11 +56,13 @@
     }
   },
   "dependencies": {
+    "@types/lokijs": "^1.5.0",
     "@types/node": "^8.5.7",
     "@types/webpack": "^3.8.2",
     "axios": "^0.16.1",
     "bluebird": "^3.5.0",
     "element-ui": "^2.0.11",
+    "lokijs": "^1.5.1",
     "mz": "^2.6.0",
     "nedb": "^1.8.0",
     "nedb-promise": "^2.0.1",
@@ -72,7 +74,7 @@
     "unzip": "^0.1.11",
     "vue": "^2.5.13",
     "vue-electron": "^1.0.6",
-    "vue-router": "^2.5.3",
+    "vue-router": "^2.8.1",
     "vuex": "^3.0.1",
     "yauzl": "^2.8.0"
   },

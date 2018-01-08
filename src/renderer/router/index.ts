@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import * as Router from 'vue-router';
 
 Vue.use(Router);
 
@@ -9,22 +9,22 @@ export default new Router({
       path: '/',
       name: 'index',
       // component: require('../components/downloader.vue'),
-      component: require('../pages/index.vue'),
+      component: require('../pages/index.vue').default,
     },
     {
       path: '/game',
       name: 'game',
-      component: require('../pages/games.vue'),
+      component: require('../pages/games.vue').default,
     },
     {
       path: '/config',
       name: 'config',
-      component: require('../pages/config.vue'),
+      component: require('../pages/config.vue').default,
     },
     {
       path: '/download',
       name: 'download',
-      component: require('../components/LandingPage.vue'),
+      component: require('../components/LandingPage.vue').default,
     },
     {
       path: '*',
