@@ -11,6 +11,7 @@ import * as fs from 'fs-extra'
 import * as cp from 'child_process'
 import {ChildProcess} from 'child_process'
 import * as rimraf from 'rimraf'
+import {debug} from 'util'
 
 namespace Launcher {
   export interface IOptions {
@@ -21,29 +22,27 @@ namespace Launcher {
 }
 
 class Launcher extends EventEmitter {
-  public versionPath: string
-  public minecraftPath: string
-  public authResult: any
-  public java: string
-  public opts: Launcher.IOptions
   public process:ChildProcess
 
   private _libraryPath: string
   private _nativesPath: string
   private _arguments: string[]
   private _missingLibrary: string[]
+  private _gameDirectory: string
+  private _assetDirectory: string
 
-  constructor (versionPath: string, minecraftPath: string, authResult: any, java: string, opts: Launcher.IOptions) {
+  constructor (public versionPath: string,
+               public minecraftPath: string,
+               public authResult: any,
+               public java: string,
+               public opts: Launcher.IOptions) {
     super()
-    this.versionPath = versionPath
-    this.minecraftPath = minecraftPath
-    this.authResult = authResult
-    this.java = java
-    this.opts = opts
 
     this._libraryPath = npath.join(minecraftPath, 'libraries')
     this._nativesPath = npath.join(versionPath, `${this.opts.json.id}-natives-${~~(Date.now() / 1000)}`)
     this._arguments = []
+    this._gameDirectory = npath.join(this.versionPath, '.minecraft')
+    this._assetDirectory = npath.join(this.minecraftPath, 'assets')
 
     const defaultOpts = {
       javaxmx: '1024',
@@ -71,6 +70,8 @@ class Launcher extends EventEmitter {
       err['launcher'] = this
       throw err
     }
+
+    await fs.ensureDir(this._gameDirectory)
     this.emit('progress', 'mergeArguments')
     this._arguments.push(this.opts.json['mainClass'])
     this._mcArguments()
@@ -133,11 +134,14 @@ class Launcher extends EventEmitter {
       librariesPath.push(path)
     }
     const jar = this.opts.json.jar || this.opts.json.id
+    let filePath: string
     if (this.opts.json.inheritsFrom) {
-      librariesPath.push(npath.join(this.versionPath, `../${this.opts.json.inheritsFrom}/${jar}.jar`))
+      filePath = npath.join(this.versionPath, `../${this.opts.json.inheritsFrom}/${jar}.jar`)
     } else {
-      librariesPath.push(npath.join(this.versionPath, `${jar}.jar`))
+      filePath = npath.join(this.versionPath, `${jar}.jar`)
     }
+    if (!await fs.pathExists(filePath)) throw new Error('cannot find jar')
+    librariesPath.push(filePath)
 
     this._arguments.push('-cp')
     this._arguments.push(`${librariesPath.join(npath.delimiter)}`)
@@ -196,8 +200,8 @@ class Launcher extends EventEmitter {
     const values = {
       '${auth_player_name}': this.authResult.username,
       '${version_name}': this.opts.json['id'],
-      '${game_directory}': npath.join(this.versionPath, '.minecraft'),
-      '${assets_root}': npath.join(this.minecraftPath, 'assets'),
+      '${game_directory}': this._gameDirectory,
+      '${assets_root}': this._assetDirectory,
       '${assets_index_name}': this.opts.json['assets'],
       '${user_type}': 'Legacy',
       '${version_type}': 'Legacy',

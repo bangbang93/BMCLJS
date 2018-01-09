@@ -89,7 +89,7 @@ ipcMain.on('game:running', (event) => {
   event.returnValue = [...running.values()].map((p) => ({
     name: p.name,
     launcher: p.launcher,
-    id: p.id,
+    id: p.id.toString(),
   }));
 });
 
