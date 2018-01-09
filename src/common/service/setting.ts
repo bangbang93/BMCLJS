@@ -2,11 +2,12 @@
  * Created by bangbang93 on 2017/8/13.
  */
 
+
 'use strict';
 import {ISetting, Setting} from './datastore'
-const path = require('path');
-const electron = require('electron');
-const fs = require('mz').fs;
+import * as fs from 'fs-extra'
+import * as electron from 'electron'
+import * as path from 'path'
 
 let app;
 if (electron.remote) {
@@ -15,12 +16,12 @@ if (electron.remote) {
   app = electron.app;
 }
 
-export const addPath = async function (path) {
-  let gamePaths:ISetting = await Setting.findOne({
+export const addPath = function (path) {
+  let gamePaths:ISetting = Setting.findOne({
     key: 'gamePaths'
   });
   if (!gamePaths) {
-    gamePaths = await Setting.insert({
+    gamePaths = Setting.insert({
       key: 'gamePaths',
       value: [],
     })
@@ -73,7 +74,7 @@ export const setSetting = async function (key, value) {
 
 async function main () {
   const LOCK_FILE = path.join(app.getPath('userData'), 'bmcljs.lock');
-  if (!await fs.exists(LOCK_FILE)) {
+  if (!await fs.pathExists(LOCK_FILE)) {
     await init();
     await fs.writeFile(LOCK_FILE, '');
   }
@@ -81,9 +82,9 @@ async function main () {
 
 async function init () {
   const VANILLA_MINECRAFT_PATH = path.join(app.getPath('appData'), 'minecraft');
-  if (await fs.exists(VANILLA_MINECRAFT_PATH)) {
+  if (await fs.pathExists(VANILLA_MINECRAFT_PATH)) {
     await Setting.insert({
-      key: 'config.path',
+      key: 'gamePaths',
       value: [VANILLA_MINECRAFT_PATH]
     });
   }

@@ -2,8 +2,8 @@
  * Created by bangbang93 on 2017/8/13.
  */
 'use strict';
-import { fs } from 'mz';
-import npath from 'path';
+import * as fs from 'fs-extra';
+import * as npath from 'path';
 import * as ConfigService from './setting';
 
 export const refresh = async function () {
@@ -17,7 +17,7 @@ export const refresh = async function () {
     ]
     let versionPath = '';
     for (versionPath of versionPaths) {
-      if (await fs.exists(versionPath)) {
+      if (await fs.pathExists(versionPath)) {
         break;
       }
     }
@@ -30,7 +30,7 @@ export const refresh = async function () {
       const stat = await fs.stat(detailPath);
       if (!stat.isDirectory()) continue;
       const files = await fs.readdir(detailPath);
-      if (!files.some((file) => file.match(/.json$/))) {
+      if (!files.some((file) => !!file.match(/.json$/))) {
         continue;
       }
       let jsonFile;
@@ -38,7 +38,7 @@ export const refresh = async function () {
       for (const file of files) {
         if (!file.endsWith('.json')) continue;
         const path = npath.join(detailPath, file);
-        let content = await fs.readFile(path);
+        let content = await fs.readFile(path, 'utf8');
         try {
           content = JSON.parse(content);
         } catch (e) {}

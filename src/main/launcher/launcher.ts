@@ -15,8 +15,8 @@ import * as rimraf from 'rimraf'
 namespace Launcher {
   export interface IOptions {
     json: any
-    javaxmx: number,
-    extArg: string | string[],
+    javaxmx?: number,
+    extArg?: string | string[],
   }
 }
 
@@ -33,7 +33,7 @@ class Launcher extends EventEmitter {
   private _arguments: string[]
   private _missingLibrary: string[]
 
-  constructor (versionPath, minecraftPath, authResult, java, opts) {
+  constructor (versionPath: string, minecraftPath: string, authResult: any, java: string, opts: Launcher.IOptions) {
     super()
     this.versionPath = versionPath
     this.minecraftPath = minecraftPath
