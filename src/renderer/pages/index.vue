@@ -2,27 +2,20 @@
   <div class="container">
     <el-row>
       <el-col :span="22" :offset="1">
-        <bmcl-running-card :pcb="pcb" v-for="(pcb, index) in running" :key="index"/>
+        <bmcl-running-card :pcb="pcb" v-for="pcb in running" :key="pcb.id"/>
+        <div v-if="running.length === 0" style="text-align: center; width: 100%">并没有游戏在运行</div>
       </el-col>
     </el-row>
   </div>
 </template>
-<script>
-  const ipcRenderer = require('electron').ipcRenderer;
-  console.log(ipcRenderer.sendSync('game:running'));
+<script lang="ts">
   export default {
     components: {
       bmclRunningCard: require('../components/game/bmcl-running-card.vue').default,
     },
-    data () {
-      return {
-        running: [{
-          version: {
-            name: '1.7.10',
-          },
-          launcher: {},
-          process: {},
-        }]
+    computed: {
+      running () {
+        return this.$store.state.process.processes
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <el-card>
-    name: {{pcb.version.name}}
+    name: {{pcb.name}}
   </el-card>
 </template>
 <script>

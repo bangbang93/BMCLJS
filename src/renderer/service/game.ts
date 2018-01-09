@@ -16,7 +16,7 @@ export const start = function (version) {
           // TODO missing library
           console.log(arg.missing);
           const err = new Error('missing-library');
-          err.missing = arg.missing;
+          err['missing'] = arg.missing;
           reject(err);
           break;
         case 'error':

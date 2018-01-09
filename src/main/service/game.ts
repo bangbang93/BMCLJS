@@ -6,6 +6,7 @@
 'use strict';
 import Launcher from '../launcher/launcher';
 import { ipcMain } from 'electron';
+import {mainWindow} from '../index'
 
 export interface IRunningGame {
   name: string,
@@ -39,10 +40,6 @@ export const start = async function (version: IStartArguments) {
   const launcher = new Launcher(version.versionPath, version.minecraftPath, {}, '/usr/bin/java', {
     json: version.json
   });
-  const p = {
-    version: version,
-    launcher: launcher,
-  };
   running.set(id, {
     name: version.name,
     json: version.json,
@@ -53,6 +50,7 @@ export const start = async function (version: IStartArguments) {
   cp.stdout.pipe(process.stdout);
   cp.stderr.pipe(process.stderr);
   cp.on('exit', () => {
+    mainWindow.webContents.send('game:exit', {id: id.toString()})
     running.delete(id)
   })
   return launcher;
@@ -87,9 +85,11 @@ ipcMain.on('game:start', async (event, arg) => {
   }
 })
 ipcMain.on('game:running', (event) => {
+  console.log('game:running')
   event.returnValue = [...running.values()].map((p) => ({
-    version: p.name,
+    name: p.name,
     launcher: p.launcher,
+    id: p.id,
   }));
 });
 

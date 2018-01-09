@@ -20,6 +20,7 @@
   import * as CommonGameService from '../../common/service/game';
   import * as RendererGameService from '../service/game';
   import {CommonDownloadService} from '../../common/service/download';
+  import {Store} from 'vuex'
 
   export default {
     components: {
@@ -49,7 +50,7 @@
         this.starting = true;
         for (const version of this.vm.versions) {
           if (version.name === index) {
-            await start(version);
+            await this.start(version);
             this.starting = false;
             break;
           }
@@ -57,23 +58,28 @@
       },
       async refresh () {
         this.vm.versions = await CommonGameService.refresh();
-      }
-    }
-  };
+      },
 
-  async function start (version) {
-    try {
-      await RendererGameService.start(version);
-    } catch (e) {
-      if (e.message === 'missing-library') {
-        const downloadInfo = await CommonDownloadService.getLibrariesDownloadUrls(e.missing);
-        console.log(downloadInfo);
-        for await(const status of CommonDownloadService.downloadLibraries(downloadInfo)) {
-          console.log(status)
+      async start (version, isRetry = false) {
+        try {
+          await RendererGameService.start(version);
+          this.$store.commit('process/startGame', {
+            name: version.name,
+            json: version.json,
+            id: `${version.versionPath}:${version.name}`
+          })
+        } catch (e) {
+          if (e.message === 'missing-library') {
+            const downloadInfo = await CommonDownloadService.getLibrariesDownloadUrls(e.missing);
+            console.log(downloadInfo);
+            for await(const status of CommonDownloadService.downloadLibraries(downloadInfo)) {
+              console.log(status)
+            }
+          }
         }
       }
     }
-  }
+  };
 </script>
 <style scoped="" lang="scss">
   .bmcl-game-page {
