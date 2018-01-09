@@ -2,6 +2,7 @@ import * as fs from 'fs-extra'
 import {remote} from 'electron'
 import * as path from 'path'
 import * as rimraf from 'rimraf'
+import {validate} from 'jsonschema'
 
 const Node7z = require('node-7z')
 
@@ -21,7 +22,7 @@ interface IModpackManifest {
   releaseTime: Date,
   description: string,
 
-  files: [{
+  files?: [{
     path: string,
     sha1: string,
   }]
@@ -31,12 +32,19 @@ interface IModpackUpdateManifest extends IModpackManifest {
   rm?: string[]
 }
 
+const ModpackManifestSchema = require('../../common/schema/modpack-manifest.json')
+
 class Modpack {
   public manifest: IModpackManifest
   private tempDir: string
   constructor (public filename: string) {
     this.tempDir = path.join(remote.app.getPath('temp'), 'modpack', Date.now().toString())
   }
+
+  /**
+   * parse manifest
+   * @returns {Promise<void>}
+   */
   async read() {
     const zip = new Node7z()
     await zip.extractFull(this.filename, this.tempDir)
@@ -44,10 +52,28 @@ class Modpack {
     if (!await fs.pathExists(manifestFile)) {
       throw new Error('invalid modpack: modpack.json not found')
     }
-    this.manifest = await fs.readJSON(manifestFile)
+    const manifest = await fs.readJSON(manifestFile)
+    const validatorResult = validate(manifest, ModpackManifestSchema)
+    if (!validatorResult.valid) {
+      let err = new Error('invalid modpack: modpack.json format error')
+      err['validate'] = validatorResult.errors
+      throw err
+    }
+
+    this.manifest = manifest
   }
 
-  async close() {
+  /**
+   * import to game dir
+   * @param {string} path
+   * @returns {Promise<void>}
+   */
+  async import(path: string) {
+
+  }
+
+
+    async close() {
     return rimraf.__promisify__(this.tempDir)
   }
 }

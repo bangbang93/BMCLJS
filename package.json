@@ -66,6 +66,7 @@
     "bluebird": "^3.5.0",
     "element-ui": "^2.0.11",
     "fs-extra": "^5.0.0",
+    "jsonschema": "^1.2.2",
     "lokijs": "^1.5.1",
     "nedb": "^1.8.0",
     "nedb-promise": "^2.0.1",

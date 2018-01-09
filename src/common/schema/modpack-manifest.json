@@ -1,0 +1,64 @@
+{
+  "id": "ModpackManifest",
+  "type": "object",
+  "properties": {
+    "minecraft": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "modLoaders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "support": {
+      "type": "string"
+    },
+    "dedicate": {
+      "type": "string"
+    },
+    "forceUpdate": {
+      "type": "boolean"
+    },
+    "releaseTime": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sha1": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

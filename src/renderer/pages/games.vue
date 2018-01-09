@@ -20,7 +20,6 @@
   import * as CommonGameService from '../../common/service/game';
   import * as RendererGameService from '../service/game';
   import {CommonDownloadService} from '../../common/service/download';
-  import {Store} from 'vuex'
 
   export default {
     components: {
