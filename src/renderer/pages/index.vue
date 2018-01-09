@@ -2,7 +2,7 @@
   <div class="container">
     <el-row>
       <el-col :span="22" :offset="1">
-        <bmcl-running-card :pcb="pcb" v-for="(pcb, index) in running" :key="index"></bmcl-running-card>
+        <bmcl-running-card :pcb="pcb" v-for="(pcb, index) in running" :key="index"/>
       </el-col>
     </el-row>
   </div>

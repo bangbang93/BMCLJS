@@ -4,7 +4,7 @@
       <el-menu-item :index="index + ''" :route="menu.route" v-for="(menu, index) in menuItems" :key="index">{{menu.title}}</el-menu-item>
     </el-menu>
     <transition>
-      <router-view class="container"></router-view>
+      <router-view class="container"/>
     </transition>
   </div>
 </template>

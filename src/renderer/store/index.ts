@@ -5,6 +5,8 @@ import modules from './modules/index';
 
 Vue.use(Vuex);
 
+export interface IRootState {}
+
 export default new Vuex.Store({
   modules,
   strict: process.env.NODE_ENV !== 'production'

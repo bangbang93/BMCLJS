@@ -2,7 +2,7 @@
  * Created by bangbang93 on 2017/8/14.
  */
 'use strict';
-import Launcher from '../../main/launcher/launcher';
+import Launcher from '../launcher/launcher';
 const { ipcMain } = require('electron');
 
 const running = [];
