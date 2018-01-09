@@ -78,7 +78,7 @@
     methods: {
       async initData () {
         this.directory.paths = await ConfigService.getPaths();
-        this.download.mirror = await ConfigService.getConfig('mirror');
+        this.download.mirror = await ConfigService.getSetting('mirror');
       },
       onSave () {
         console.log(this);
@@ -99,7 +99,7 @@
         animate();
       },
       onMirrorChange (label) {
-        return ConfigService.setConfig('mirror', label);
+        return ConfigService.setSetting('mirror', label);
       },
       async onPathDelete () {
         const promise = this.directory.selection.map((selection) => ConfigService.delPath(selection.path));

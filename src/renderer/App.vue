@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-menu theme="dark" :default-active="activeIndex" mode="horizontal" @select="onSelect" class="menu" :router="true">
+    <el-menu :default-active="activeIndex" mode="horizontal" @select="onSelect" class="menu" :router="true">
       <el-menu-item :index="index + ''" :route="menu.route" v-for="(menu, index) in menuItems" :key="index">{{menu.title}}</el-menu-item>
     </el-menu>
     <transition>

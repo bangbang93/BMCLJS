@@ -15,6 +15,13 @@ if (electron.remote) {
   app = electron.app;
 }
 
-export const db = new Lokijs( path.join(app.getPath('userData'), '/data.db'))
+export const db = new Lokijs(path.join(app.getPath('userData'), '/data.db'), {
+  autosave: true,
+  autoload: true,
+})
 
-export const Setting = db.addCollection('Setting')
+export interface ISetting{
+  key: string,
+  value: any
+}
+export const Setting = db.addCollection<ISetting>('Setting')

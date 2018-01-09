@@ -1,8 +1,9 @@
 /**
  * Created by bangbang93 on 2017/8/13.
  */
+
 'use strict';
-import {Setting} from './datastore';
+import {ISetting, Setting} from './datastore'
 const path = require('path');
 const electron = require('electron');
 const fs = require('mz').fs;
@@ -15,7 +16,7 @@ if (electron.remote) {
 }
 
 export const addPath = async function (path) {
-  let gamePaths = await Setting.findOne({
+  let gamePaths:ISetting = await Setting.findOne({
     key: 'gamePaths'
   });
   if (!gamePaths) {
@@ -24,17 +25,17 @@ export const addPath = async function (path) {
       value: [],
     })
   }
-  gamePaths = gamePaths.value;
-  gamePaths.push(path);
+  gamePaths.value.push(path);
   return Setting.update(gamePaths);
 }
 
-export const getPaths = async function () {
-  let gamePaths = await Setting.findOne({
+export const getPaths = function () {
+  let gamePaths:ISetting = Setting.findOne({
     key: 'gamePaths',
   });
+  console.log(gamePaths)
   if (!gamePaths) {
-    gamePaths = await Setting.insert({
+    gamePaths = Setting.insert({
       key: 'gamePaths',
       value: [],
     })
@@ -42,20 +43,19 @@ export const getPaths = async function () {
   return gamePaths.value;
 }
 
-export const delPath = async function (path) {
-  let paths = await Setting.findOne({
-    key: 'config.path'
+export const delPath = function (path) {
+  let paths = Setting.findOne({
+    key: 'gamePaths'
   });
-  paths = paths.value;
-  const index = paths.indexOf(path);
+  const index = paths.value.indexOf(path);
   if (index === -1) return;
-  paths.splice(index, 1);
+  paths.value.splice(index, 1);
   return Setting.update(paths);
 }
 
-export const getConfig = async function (key) {
+export const getSetting = async function (key) {
   const value = await Setting.findOne({
-    key: `config.${key}`,
+    key,
   });
   if (value) {
     return value.value;
@@ -63,9 +63,9 @@ export const getConfig = async function (key) {
   return null;
 }
 
-export const setConfig = async function (key, value) {
+export const setSetting = async function (key, value) {
   return Setting.findAndUpdate({
-    key: `config.${key}`,
+    key,
   }, (doc) => {
     doc.value = value
   })
@@ -87,7 +87,7 @@ async function init () {
       value: [VANILLA_MINECRAFT_PATH]
     });
   }
-  await setConfig('mirror', 'bmclapi');
+  await setSetting('mirror', 'bmclapi');
 }
 
 main().catch(console.error);
