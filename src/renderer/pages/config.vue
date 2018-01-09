@@ -41,7 +41,7 @@
   </el-row>
 </template>
 <script>
-  import * as ConfigService from '../../common/service/config';
+  import * as ConfigService from '../../common/service/setting';
   export default {
     data () {
       return {

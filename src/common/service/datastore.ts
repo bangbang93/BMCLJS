@@ -17,4 +17,4 @@ if (electron.remote) {
 
 export const db = new Lokijs( path.join(app.getPath('userData'), '/data.db'))
 
-export const config = db.addCollection('config')
+export const Setting = db.addCollection('Setting')

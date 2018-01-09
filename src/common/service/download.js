@@ -3,7 +3,7 @@
  */
 'use strict';
 import * as MirrorService from './mirror';
-import * as Config from './config';
+import * as Config from './setting';
 
 export const getLibrariesDownloadUrls = async function getLibrariesDownloadUrls (libraries) {
   const mirror = MirrorService.getMirror(await Config.getConfig('mirror'));

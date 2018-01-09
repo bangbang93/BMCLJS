@@ -6,11 +6,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import router from './router/index';
 import store from './store/index';
-import db from '../common/service/datastore';
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue['http'] = Vue.prototype.$http = axios;
-Vue.prototype.$db = db;
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);

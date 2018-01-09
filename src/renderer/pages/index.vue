@@ -12,7 +12,7 @@
   console.log(ipcRenderer.sendSync('game:running'));
   export default {
     components: {
-      bmclRunningCard: require('../components/game/bmcl-running-card.vue'),
+      bmclRunningCard: require('../components/game/bmcl-running-card.vue').default,
     },
     data () {
       return {

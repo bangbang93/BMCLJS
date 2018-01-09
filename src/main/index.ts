@@ -2,7 +2,7 @@
 
 import { app, BrowserWindow } from 'electron';
 
-require('../common/service/config');
+require('../common/service/setting');
 require('./service/game');
 
 /**

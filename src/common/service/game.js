@@ -4,7 +4,7 @@
 'use strict';
 import { fs } from 'mz';
 import npath from 'path';
-import * as ConfigService from './config';
+import * as ConfigService from './setting';
 
 export const refresh = async function () {
   const paths = await ConfigService.getPaths();

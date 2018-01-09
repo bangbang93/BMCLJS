@@ -2,7 +2,7 @@
  * Created by bangbang93 on 2017/8/13.
  */
 'use strict';
-import {config} from './datastore';
+import {Setting} from './datastore';
 const path = require('path');
 const electron = require('electron');
 const fs = require('mz').fs;
@@ -15,34 +15,46 @@ if (electron.remote) {
 }
 
 export const addPath = async function (path) {
-  let paths = await config.findOne({
-    key: 'config.path'
+  let gamePaths = await Setting.findOne({
+    key: 'gamePaths'
   });
-  paths = paths.value;
-  paths.push(path);
-  return config.update(paths);
+  if (!gamePaths) {
+    gamePaths = await Setting.insert({
+      key: 'gamePaths',
+      value: [],
+    })
+  }
+  gamePaths = gamePaths.value;
+  gamePaths.push(path);
+  return Setting.update(gamePaths);
 }
 
 export const getPaths = async function () {
-  let paths = await config.findOne({
-    key: 'config.path',
+  let gamePaths = await Setting.findOne({
+    key: 'gamePaths',
   });
-  return paths.value;
+  if (!gamePaths) {
+    gamePaths = await Setting.insert({
+      key: 'gamePaths',
+      value: [],
+    })
+  }
+  return gamePaths.value;
 }
 
 export const delPath = async function (path) {
-  let paths = await config.findOne({
+  let paths = await Setting.findOne({
     key: 'config.path'
   });
   paths = paths.value;
   const index = paths.indexOf(path);
   if (index === -1) return;
   paths.splice(index, 1);
-  return config.update(paths);
+  return Setting.update(paths);
 }
 
 export const getConfig = async function (key) {
-  const value = await config.findOne({
+  const value = await Setting.findOne({
     key: `config.${key}`,
   });
   if (value) {
@@ -52,7 +64,7 @@ export const getConfig = async function (key) {
 }
 
 export const setConfig = async function (key, value) {
-  return config.findAndUpdate({
+  return Setting.findAndUpdate({
     key: `config.${key}`,
   }, (doc) => {
     doc.value = value
@@ -70,7 +82,7 @@ async function main () {
 async function init () {
   const VANILLA_MINECRAFT_PATH = path.join(app.getPath('appData'), 'minecraft');
   if (await fs.exists(VANILLA_MINECRAFT_PATH)) {
-    await config.insert({
+    await Setting.insert({
       key: 'config.path',
       value: [VANILLA_MINECRAFT_PATH]
     });
