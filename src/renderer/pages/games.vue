@@ -2,7 +2,7 @@
   <div class="bmcl-game-page ">
     <el-row class="bmcl-game-search">
       <el-col :span="17" :offset="2">
-        <el-input v-model="vm.filter" placeholder="搜索"></el-input>
+        <el-input v-model="vm.filter" placeholder="搜索"/>
       </el-col>
       <el-col :span="4" :offset="1">
         <el-button class="btn-refresh" @click="refresh" type="primary">刷新</el-button>
@@ -10,16 +10,16 @@
     </el-row>
     <el-row class="game-board" >
       <el-col :span="24">
-        <game-selector :versions="vm.versions | version(vm.filter)" @select="onSelect" :starting="starting"></game-selector>
+        <game-selector :versions="vm.versions | version(vm.filter)" @select="onSelect" :starting="starting"/>
       </el-col>
     </el-row>
   </div>
 </template>
-<script>
+<script lang="ts">
   import GameSelector from '../components/game/game-selector';
   import * as CommonGameService from '../../common/service/game';
   import * as RendererGameService from '../service/game';
-  import * as CommonDownloadService from '../../common/service/download';
+  import {CommonDownloadService} from '../../common/service/download';
 
   export default {
     components: {
@@ -68,6 +68,9 @@
       if (e.message === 'missing-library') {
         const downloadInfo = await CommonDownloadService.getLibrariesDownloadUrls(e.missing);
         console.log(downloadInfo);
+        for await(const status of CommonDownloadService.downloadLibraries(downloadInfo)) {
+          console.log(status)
+        }
       }
     }
   }

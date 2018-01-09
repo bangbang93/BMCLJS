@@ -16,79 +16,58 @@ if (electron.remote) {
   app = electron.app;
 }
 
-export const addPath = function (path) {
-  let gamePaths:ISetting = Setting.findOne({
-    key: 'gamePaths'
-  });
-  if (!gamePaths) {
-    gamePaths = Setting.insert({
-      key: 'gamePaths',
-      value: [],
-    })
-  }
-  gamePaths.value.push(path);
-  return Setting.update(gamePaths);
+export interface IBMCLSetting {
+  gamePaths: string[],
+  mirror: string,
+}
+
+const SETTING_FILE = path.join(app.getPath('userData'), 'bmcl.json')
+
+let SETTING:IBMCLSetting = fs.readJSONSync(SETTING_FILE, {throws: false}) || init()
+
+fs.watchFile(SETTING_FILE, (curr, prev) => {
+  SETTING = fs.readJSONSync(SETTING_FILE, {throws: false}) || init()
+})
+
+async function save() {
+  return fs.writeJSON(SETTING_FILE, SETTING, {spaces: 4})
+}
+
+export const addPath = async function (path) {
+  SETTING.gamePaths.push(path)
+  await save()
 }
 
 export const getPaths = function () {
-  let gamePaths:ISetting = Setting.findOne({
-    key: 'gamePaths',
-  });
-  console.log(gamePaths)
-  if (!gamePaths) {
-    gamePaths = Setting.insert({
-      key: 'gamePaths',
-      value: [],
-    })
-  }
-  return gamePaths.value;
+  return SETTING.gamePaths
 }
 
-export const delPath = function (path) {
-  let paths = Setting.findOne({
-    key: 'gamePaths'
-  });
-  const index = paths.value.indexOf(path);
+export const delPath = async function (path) {
+  const index = SETTING.gamePaths.indexOf(path);
   if (index === -1) return;
-  paths.value.splice(index, 1);
-  return Setting.update(paths);
+  SETTING.gamePaths.splice(index, 1);
+  await save()
 }
 
-export const getSetting = async function (key) {
-  const value = await Setting.findOne({
-    key,
-  });
-  if (value) {
-    return value.value;
-  }
-  return null;
+export const getSetting = async function (key: string) {
+  return SETTING[key]
 }
 
 export const setSetting = async function (key, value) {
-  return Setting.findAndUpdate({
-    key,
-  }, (doc) => {
-    doc.value = value
-  })
+  SETTING[key] = value
+  await save()
 }
 
-async function main () {
-  const LOCK_FILE = path.join(app.getPath('userData'), 'bmcljs.lock');
-  if (!await fs.pathExists(LOCK_FILE)) {
-    await init();
-    await fs.writeFile(LOCK_FILE, '');
-  }
-}
-
-async function init () {
+export function init () {
+  console.log('init default setting')
   const VANILLA_MINECRAFT_PATH = path.join(app.getPath('appData'), 'minecraft');
-  if (await fs.pathExists(VANILLA_MINECRAFT_PATH)) {
-    await Setting.insert({
-      key: 'gamePaths',
-      value: [VANILLA_MINECRAFT_PATH]
-    });
+  const gamePaths = []
+  if (fs.pathExistsSync(VANILLA_MINECRAFT_PATH)) {
+    gamePaths.push(VANILLA_MINECRAFT_PATH)
   }
-  await setSetting('mirror', 'bmclapi');
-}
+  return {
+    gamePaths,
+    mirror: 'bmclapi'
+  }
 
-main().catch(console.error);
+}

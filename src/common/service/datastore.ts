@@ -6,6 +6,8 @@
 import * as Lokijs from 'lokijs'
 import * as path from 'path';
 import * as electron from 'electron';
+import * as fs from 'fs-extra'
+import * as SettingService from './setting'
 
 let app;
 
@@ -15,7 +17,9 @@ if (electron.remote) {
   app = electron.app;
 }
 
-export const db = new Lokijs(path.join(app.getPath('userData'), 'data.db'), {
+const DB_FILE = path.join(app.getPath('userData'), 'data.db')
+
+export const db = new Lokijs(DB_FILE, {
   autosave: true,
   autoload: true,
   autoloadCallback: onAutoload,

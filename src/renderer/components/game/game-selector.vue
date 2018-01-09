@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="game-selector">
-      <el-col :span="6" v-for="version in versions" :key="version.name"  >
+      <el-col :span="12" v-for="version in versions" :key="version.name"  >
         <el-card class="game-versions">
           <div slot="header">
             <div class="bmcl-game-version-name">{{ version.name }}</div>
             <el-button class="button" size="small" type="primary" @click="onStart(version.name)" :disabled="starting">启动</el-button>
           </div>
-          <card-body :version="version"></card-body>
+          <card-body :version="version"/>
         </el-card>
       </el-col>
     </div>

@@ -21,7 +21,7 @@
         </el-collapse-item>
         <el-collapse-item :name="configs[1].index" :title="configs[1].title" :id="configs[1].index">
           <el-radio-group v-model="download.mirror" @change="onMirrorChange">
-            <el-radio label="BMCLAPI" name="mirror">BMCLAPI</el-radio>
+            <el-radio label="bmclapi" name="mirror">BMCLAPI</el-radio>
             <el-radio label="official" name="mirror">官方源</el-radio>
           </el-radio-group>
         </el-collapse-item>
