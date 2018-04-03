@@ -1,5 +1,7 @@
 # bmcljs
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bangbang93/BMCLJS.svg)](https://greenkeeper.io/)
+
 > bmcl on electron
 
 #### Build Setup
