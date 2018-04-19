@@ -73,7 +73,7 @@
     "node-7z": "^0.4.0",
     "node-sass": "^4.5.3",
     "rimraf": "^2.6.1",
-    "sass-loader": "^6.0.6",
+    "sass-loader": "^7.0.0",
     "ts-loader": "^4.1.0",
     "typescript": "^2.6.2",
     "vue": "^2.5.13",
