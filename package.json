@@ -128,7 +128,7 @@
     "karma-webpack": "^3.0.0",
     "mocha": "^5.0.5",
     "multispinner": "^0.2.1",
-    "require-dir": "^1.0.0",
+    "require-dir": "^1.1.0",
     "spectron": "^3.7.1",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
